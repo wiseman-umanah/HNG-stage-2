@@ -11,6 +11,7 @@ from sqlalchemy import func, nullsfirst, nullslast
 from sqlalchemy.sql import Select
 from sqlmodel import Session, select
 
+
 from db import get_session, init_db
 from model import Country
 from schema import CountryRead, StatusResponse
@@ -187,17 +188,17 @@ def refresh_countries(session: Session = Depends(get_session)) -> dict:
 			created += 1
 			existing_countries[lower_name] = country
 
-	# try:
-	# 	session.flush()
-	# 	generate_image(session, refresh_time)
-	# except Exception as exc:
-	# 	session.rollback()
-	# 	print(exc)
-	# 	raise _error(
-	# 		status.HTTP_500_INTERNAL_SERVER_ERROR,
-	# 		"Internal server error",
-	# 		"Failed to generate summary image",
-	# 	) from exc
+	try:
+		session.flush()
+		generate_image(session, refresh_time)
+	except Exception as exc:
+		session.rollback()
+		print(exc)
+		raise _error(
+			status.HTTP_500_INTERNAL_SERVER_ERROR,
+			"Internal server error",
+			"Failed to generate summary image",
+		) from exc
 
 	try:
 		session.commit()
