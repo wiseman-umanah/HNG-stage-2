@@ -8,7 +8,7 @@ from typing import Iterator
 
 from sqlmodel import Session, SQLModel, create_engine
 
-# load_dotenv()
+load_dotenv()
 
 DATABASE_URL = getenv("DB_URL", "sqlite:///./countries.db")
 

@@ -5,6 +5,7 @@ from typing import Any, Optional
 import requests
 from dotenv import load_dotenv
 from fastapi import Depends, FastAPI, HTTPException, Query, status
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from requests import RequestException
 from sqlalchemy import func, nullsfirst, nullslast
@@ -26,6 +27,14 @@ load_dotenv()
 init_db()
 
 app = FastAPI()
+
+app.add_middleware(
+	CORSMiddleware,
+	allow_origins=["*"],
+	allow_credentials=True,
+	allow_methods=["*"],
+	allow_headers=["*"],
+)
 
 
 def _error(status_code: int, error: str, details: Optional[Any] = None) -> HTTPException:
